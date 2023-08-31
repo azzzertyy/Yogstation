@@ -48,9 +48,15 @@
 
 /datum/component/forensics/proc/wipe_blood_DNA()
 	blood_DNA = null
-	if(isitem(parent))
-		qdel(parent.GetComponent(/datum/component/decal/blood))
 	return TRUE
+
+/datum/component/forensics/proc/wipe_blood()
+    if (isitem(parent))
+        var/datum/component/decal/blood/blood = parent.GetComponent(/datum/component/decal/blood)
+        blood.visible = FALSE
+        blood.hide_blood()
+    return TRUE
+
 
 /datum/component/forensics/proc/wipe_fibers()
 	fibers = null
@@ -65,6 +71,9 @@
 		. = TRUE
 	if(clean_types & CLEAN_TYPE_BLOOD)
 		wipe_blood_DNA()
+		. = TRUE
+	if(clean_types & CLEAN_TYPE_VISIBLE_BLOOD)
+		wipe_blood()
 		. = TRUE
 	if(clean_types & CLEAN_TYPE_FIBERS)
 		wipe_fibers()

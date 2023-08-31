@@ -1,5 +1,7 @@
 /datum/component/decal/blood
 	dupe_mode = COMPONENT_DUPE_UNIQUE
+	var/visible = TRUE
+	var/static/list/blood_splatter_appearances = list()
 
 /datum/component/decal/blood/Initialize(_icon, _icon_state, _dir, _cleanable=CLEAN_TYPE_BLOOD, _color, _layer=ABOVE_OBJ_LAYER)
 	if(!isitem(parent))
@@ -19,7 +21,6 @@
 		// It's something which takes on the look of other items, probably
 		icon = I.icon
 		icon_state = I.icon_state
-	var/static/list/blood_splatter_appearances = list()
 	//try to find a pre-processed blood-splatter. otherwise, make a new one
 	var/index = "[REF(icon)]-[icon_state]"
 	pic = blood_splatter_appearances[index]
@@ -32,8 +33,20 @@
 		blood_splatter_appearances[index] = pic
 	return TRUE
 
+/datum/component/decal/blood/proc/hide_blood()
+    var/obj/item/I = parent
+    var/icon = initial(I.icon)
+    var/icon_state = initial(I.icon_state)
+    if(!icon || !icon_state)
+        return
+    var/index = "[REF(icon)]-[icon_state]"
+    blood_splatter_appearances[index] = null
+
+
+
 /datum/component/decal/blood/proc/get_examine_name(datum/source, mob/user, list/override)
-	var/atom/A = parent
-	override[EXAMINE_POSITION_ARTICLE] = A.gender == PLURAL? "some" : "a"
-	override[EXAMINE_POSITION_BEFORE] = " blood-stained "
-	return COMPONENT_EXNAME_CHANGED
+	if(visible)
+		var/atom/A = parent
+		override[EXAMINE_POSITION_ARTICLE] = A.gender == PLURAL? "some" : "a"
+		override[EXAMINE_POSITION_BEFORE] = " blood-stained "
+		return COMPONENT_EXNAME_CHANGED
