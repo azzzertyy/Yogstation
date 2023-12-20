@@ -31,7 +31,6 @@
 	add_verb(src, /mob/living/proc/lay_down)
 
 	create_bodyparts() //initialize bodyparts
-
 	create_internal_organs()
 
 	. = ..()
@@ -40,9 +39,9 @@
 	internal_organs += new /obj/item/organ/brain/alien
 	internal_organs += new /obj/item/organ/alien/hivenode
 	internal_organs += new /obj/item/organ/tongue/alien
-	internal_organs += new /obj/item/organ/eyes/night_vision/alien
 	internal_organs += new /obj/item/organ/liver/alien
 	internal_organs += new /obj/item/organ/ears
+	AddComponent(/datum/component/echolocation, echo_range = 8, cooldown_time = 1.5, image_expiry_time = 3, fade_in_time = 0.5, fade_out_time = 0.5, color_path = /datum/client_colour/echolocate, echo_group = "xeno")
 	..()
 
 /mob/living/carbon/alien/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) // beepsky won't hunt aliums
